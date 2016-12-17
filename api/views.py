@@ -3,7 +3,7 @@ from .serializers import ContainerSerializer
 from rest_framework import status,views,generics
 from django.shortcuts import render
 from docker_helper import create_container,list_container
-
+from .models import Container
 
 
 
@@ -42,6 +42,15 @@ class CreateContainerView(generics.CreateAPIView):
             
             #name = serializer.validated_data.get('name')
             conainer = create_container(image)
+            ct = Container.objects.create(
+                        container_id= conainer.id,
+                        container_name = conainer.name,
+                        container_image = image,
+                        container_status = conainer.status
+
+                )
+            ct.save()
+
             s = serializer.data
             # here we can perform any third party api calls and get the result and inject into dict
             s.update({'Name' : conainer.name, 'status': conainer.status,'Id':conainer.id[0:8]})
