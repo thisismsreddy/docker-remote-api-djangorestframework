@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import Container
 
 class ContainerSerializer(serializers.Serializer):
     image = serializers.CharField(max_length=100)
@@ -13,3 +14,12 @@ class ContainerSerializer(serializers.Serializer):
 #     code = serializers.CharField(style={'base_template': 'textarea.html'})
 #     linenos = serializers.BooleanField(required=False)
 
+
+class ContainerListSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Container
+		fields = (
+					'id','created','container_id','container_name',
+					'container_image','container_status'
+				)
