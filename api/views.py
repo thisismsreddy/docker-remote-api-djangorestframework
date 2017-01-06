@@ -1,4 +1,5 @@
 from rest_framework.response import Response 
+from rest_framework.views import APIView
 from .serializers import ContainerSerializer, ContainerListSerializer
 from rest_framework import status,views,generics
 from django.shortcuts import render
@@ -35,9 +36,17 @@ class CreateContainerView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ContainerList(generics.ListCreateAPIView):
-    queryset = Container.objects.all()
-    serializer_class = ContainerListSerializer
+class ContainerList(APIView):
+
+    def get(self,request,*args,**kw):
+        result = list_container()
+        response = Response(result,status=status.HTTP_200_OK)
+        return response
+
+
+# class ContainerList(generics.ListCreateAPIView):
+#     queryset = Container.objects.all()
+#     serializer_class = ContainerListSerializer
 
 
 class ContainerDetail(generics.RetrieveUpdateDestroyAPIView):
